@@ -7,22 +7,23 @@ using System.Threading.Tasks;
 
 namespace Battleships.Boards
 {
-    internal class Board
+    /// <summary>
+    /// Possible field states on board.
+    /// </summary>
+    public enum Field
     {
-        /// <summary>
-        /// Possible field states on board.
-        /// </summary>
-        public enum Field{
-            Empty = 0,
-            Carrier,
-            Battleship,
-            Destroyer,
-            Submarine,
-            PatrolBoat,
-            Hit,
-            Miss
-        }
+        Empty = 0,
+        Carrier,
+        Battleship,
+        Destroyer,
+        Submarine,
+        PatrolBoat,
+        Hit,
+        Miss
+    }
 
+    internal class Board
+    {   
         protected Field[,] _board;
 
         public Board(int boardSize)
@@ -31,16 +32,9 @@ namespace Battleships.Boards
             _board = new Field[boardSize, boardSize];
         }
 
-        public void PrintBoard()
+        public Field[,] GetBoard()
         {
-            for (int i = 0; i < _board.GetLength(0); i++)
-            {
-                for (int j = 0; j < _board.GetLength(1); j++)
-                {
-                    Console.Write(_board[i, j] + "\t");
-                }
-                Console.WriteLine();
-            }
+            return _board;
         }
     }
 }

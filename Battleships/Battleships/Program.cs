@@ -9,8 +9,7 @@ namespace Battleships
         static void Main(string[] args)
         {
             int boardSize = 10;
-            GameBoard b = new GameBoard(boardSize);
-            b.PrintBoard();
+            Game game = new Game(boardSize);
             //Game game = new Game(boardSize, ships);
         }
     }

@@ -25,5 +25,7 @@ namespace Battleships
             TrackingBoard = new TrackingBoard(boardSize);
             GameBoard = new GameBoard(boardSize);
         }
+
+        
     }
 }
