@@ -1,10 +1,4 @@
 ﻿using Battleships.Boards;
-using Battleships.Ships;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Battleships
 {
@@ -19,13 +13,15 @@ namespace Battleships
         /// Board for this player's ships.
         /// </summary>
         public GameBoard GameBoard { get; } 
+        public string Name { get; }
 
-        public Player(int boardSize)
+        public Player(int boardSize, string name)
         {
             TrackingBoard = new TrackingBoard(boardSize);
             GameBoard = new GameBoard(boardSize);
+            Name = name;
         }
 
-        
+
     }
 }
