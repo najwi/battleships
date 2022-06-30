@@ -4,6 +4,10 @@ namespace Battleships.Boards
 {
     internal class TrackingBoard : Board
     {
+        /// <summary>
+        /// Initializes new Tracking Board object.
+        /// </summary>
+        /// <param name="boardSize"></param>
         public TrackingBoard(int boardSize) : base(boardSize)
         {
         }

@@ -7,7 +7,12 @@ namespace Battleships.Boards
     internal class GameBoard : Board
     {
         // Dictionary of ships and their lengths.
-        private Dictionary<Field, int> _ships;
+        private readonly Dictionary<Field, int> _ships;
+
+        /// <summary>
+        /// Initializes new Game Board object and places ships in random positions.
+        /// </summary>
+        /// <param name="boardSize"></param>
         public GameBoard(int boardSize) : base(boardSize)
         {
             _ships = new Dictionary<Field, int>
@@ -23,7 +28,7 @@ namespace Battleships.Boards
             Random random = new Random();
             foreach(KeyValuePair<Field, int> pair in _ships)
             {
-                bool placed = false;
+                var placed = false;
 
                 // Check for space.
                 while(!placed)

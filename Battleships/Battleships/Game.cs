@@ -1,24 +1,30 @@
 ﻿using System;
+using System.Text;
 using Battleships.Boards;
 
 namespace Battleships
 {
     internal class Game
     {
-        private Player _player1;
-        private Player _player2;
-        private int _boardSize;
+        private readonly Player _player1;
+        private readonly Player _player2;
 
+        /// <summary>
+        /// Initializes a new Game object with given board size.
+        /// </summary>
+        /// <param name="boardSize">Must be at least 5.</param>
         public Game(int boardSize)
         {
             _player1 = new Player(boardSize, "Player 1");
             _player2 = new Player(boardSize, "Player 2");
-            _boardSize = boardSize;
         }
 
+        /// <summary>
+        /// Main game loop. Call to start the game.
+        /// </summary>
         public void Start()
         {
-            bool run = true;
+            var run = true;
             while (run)
             {
                 PrintBoards(_player1);
@@ -42,34 +48,41 @@ namespace Battleships
                     run = false;
                 }
             }
+            Console.WriteLine("GG");
         }
 
         /// <summary>
-        /// Player1 is attacking Player2
+        /// Executes attack on player and prints results.
         /// </summary>
-        /// <param name="player1"></param>
-        /// <param name="player2"></param>
+        /// <param name="player1">Attacker</param>
+        /// <param name="player2">Defender</param>
         private void PlayerAttack(Player player1, Player player2)
         {
             var (x, y) = FindField(player2.GameBoard);
             Field type = player2.GameBoard.Strike(x, y);
             Console.WriteLine($"\n{player1.Name} strikes field ({x}, {y})...");
-            if (type == Field.Miss)
+            switch (type)
             {
-                player1.TrackingBoard.SetField(x, y, Field.Miss);
-                Console.WriteLine("It's a miss.");
-            }else if (type == Field.Hit)
-            {
-                player1.TrackingBoard.SetField(x, y, Field.Hit);
-                Console.WriteLine("Something has been hit!");
-            }
-            else
-            {
-                player1.TrackingBoard.SetField(x, y, Field.Hit);
-                Console.WriteLine($"{type} has been sunk!!");
+                case Field.Miss:
+                    player1.TrackingBoard.SetField(x, y, Field.Miss);
+                    Console.WriteLine("It's a miss.");
+                    break;
+                case Field.Hit:
+                    player1.TrackingBoard.SetField(x, y, Field.Hit);
+                    Console.WriteLine("Something has been hit!");
+                    break;
+                default:
+                    player1.TrackingBoard.SetField(x, y, Field.Hit);
+                    Console.WriteLine($"{type} has been sunk!!");
+                    break;
             }
         }
 
+        /// <summary>
+        /// Randomly finds a field on given board that can be struck.
+        /// </summary>
+        /// <param name="board"></param>
+        /// <returns></returns>
         private (int, int) FindField(GameBoard board)
         {
             Random random = new Random();
@@ -85,52 +98,57 @@ namespace Battleships
             }
         }
 
+        /// <summary>
+        /// Prints both boards of the given player.
+        /// </summary>
+        /// <param name="player"></param>
         private void PrintBoards(Player player)
         {
             Field[,] gameBoard = player.GameBoard.GetBoard();
             Field[,] trackingBoard = player.TrackingBoard.GetBoard();
 
-            Console.WriteLine($"{player.Name} game board \ttracking board");
+            Console.WriteLine($"\n{player.Name} Game board \t\tTracking board");
             for (int i = 0; i < gameBoard.GetLength(0); i++)
             {
+                var line = new StringBuilder();
                 for (int j = 0; j < gameBoard.GetLength(1); j++)
                 {
                     switch (gameBoard[i, j])
                     {
                         case Field.Empty: 
-                            Console.Write("[ ]"); 
+                            line.Append("[ ]"); 
                             break;
-                        case Field.Miss: 
-                            Console.Write("[o]"); 
+                        case Field.Miss:
+                            line.Append("[o]");
                             break;
-                        case Field.Hit: 
-                            Console.Write("[x]"); 
+                        case Field.Hit:
+                            line.Append("[x]");
                             break;
-                        default: 
-                            Console.Write("[*]"); 
+                        default:
+                            line.Append("[*]");
                             break;
                     }
                 }
-                Console.Write("\t");
+                line.Append("\t");
                 for (int j = 0; j < trackingBoard.GetLength(1); j++)
                 {
                     switch (trackingBoard[i, j])
                     {
                         case Field.Empty:
-                            Console.Write("[ ]");
+                            line.Append("[ ]");
                             break;
                         case Field.Miss:
-                            Console.Write("[o]");
+                            line.Append("[o]");
                             break;
                         case Field.Hit:
-                            Console.Write("[x]");
+                            line.Append("[x]");
                             break;
                         default:
-                            Console.Write("[*]");
+                            line.Append("[*]");
                             break;
                     }
                 }
-                Console.WriteLine();
+                Console.WriteLine(line);
             }
         }
     }
